@@ -1,8 +1,41 @@
-﻿@{
+﻿@using System.Web
+@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@model List<News>
+<h1>Lastest<span class="text-danger">News</span></h1>
+<br />
+<div class="list-group">
+    @{
+        int i = 1;
+    }
+    @foreach (var item in Model)
+    {
+        <a asp-controller="Home" asp-action="Show" asp-route-link="@item.link" class="list-group-item list-group-item-action" aria-current="true">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">@i. @item.title</h5>
+            </div>
+        </a>
+        <hr />
+        i++;
+    }
 </div>
+<nav aria-label="Page navigation example" class="d-flex justify-content-between align-items-center">
+    <ul class="pagination">
+        @{
+            int prevPage = ViewBag.page - 1;
+            if(prevPage == 0){
+                prevPage = 1;
+            }
+        }
+        <li class="page-item"><a class="page-link" asp-action="Index" asp-controller="Home" asp-route-page="@prevPage">Previous</a></li>
+        @{
+            int nextPage = ViewBag.page + 1;
+            if(nextPage == 21){
+                nextPage = 0;
+            }
+        }
+        <li class="page-item"><a class="page-link" asp-controller="Home" asp-action="Index" asp-route-page="@nextPage">Next</a></li>
+    </ul>
+    <h6>Showing Page <span class="text-danger">@ViewBag.page</span> of 20</h6>
+</nav>
